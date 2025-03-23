@@ -5,7 +5,7 @@
 
 **Exploiting Deblurring Networks for Radiance Fields**<br>
 Haeyun Choi, Heemin Yang, Janghyuk Han, Sunghyun Cho<br>
-POSTECH
+KT, POSTECH
 
 ![Teaser image](./assets/teaser.png)
 
