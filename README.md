@@ -1,8 +1,8 @@
 # [CVPR 2025] Exploiting Deblurring Networks for Radiance Fields (DeepDeblurRF)<br><sub>- Official PyTorch Implementation -</sub>
 
-[![Project Website](https://img.shields.io/badge/Project-blue)](https://haeyun-choi.github.io/DDRF_page/)
+[![Project Website](https://img.shields.io/badge/Project--blue)](https://haeyun-choi.github.io/DDRF_page/)
 [![arXiv](https://img.shields.io/badge/arXiv--b31b1b.svg)](https://arxiv.org/abs/2502.14454)
-[![Dataset](https://img.shields.io/badge/Dataset-green)](https://drive.google.com/drive/folders/12t5J8VW102c2eXuj90RY9nVw5Uyv2YQ8)
+[![Dataset](https://img.shields.io/badge/Dataset--green)](https://drive.google.com/drive/folders/12t5J8VW102c2eXuj90RY9nVw5Uyv2YQ8)
 
 **Exploiting Deblurring Networks for Radiance Fields**<br>
 Haeyun Choi, Heemin Yang, Janghyuk Han, Sunghyun Cho<br>
