@@ -16,6 +16,5 @@ KT, POSTECH
 ## News  
 [Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
 [Feb 27, 2025] Code & dataset will be released soon  
-[Apr 2, 2025] Test dataset has been released! 🚀  
-- **BlurRF_Synth**, **BlurRF_Real**, **BlurRF_SB** are now available.  
-- Example Blender files for dataset generation are also provided.  
+[Apr 2, 2025] Test dataset has been released! 🚀 (**BlurRF_Synth, BlurRF_Real, BlurRF_SB** available, example Blender files provided)  
+
