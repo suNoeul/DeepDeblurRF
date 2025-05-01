@@ -48,7 +48,7 @@ data/<scene_name>/Final_results_iteration_4/
 data/cozyroom/Final_results_iteration_4/
 ```
 
-🔄 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). Our default implementation uses Gaussian Splatting (GS), but DeepDeblurRF is not limited to it.
+🔄 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
 
 ## 🙏 Acknowledgements
 
