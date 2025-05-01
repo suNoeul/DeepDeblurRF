@@ -55,8 +55,8 @@ data/cozyroom/Final_results_iteration_4/
 This project builds upon the following works. We thank the authors for open-sourcing their excellent codebases:
 
 - [NAFNet (ECCV 2022)](https://github.com/megvii-research/NAFNet)
-- [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
 - [Plenoxels / SVoX2 (svox2, CVPR 2022)](https://github.com/sxyu/svox2)
+- [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
 
 ## 📖 Citation
 
