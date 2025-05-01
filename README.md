@@ -48,15 +48,15 @@ data/<scene_name>/Final_results_iteration_4/
 data/cozyroom/Final_results_iteration_4/
 ```
 
-🔄 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF, Mip-NeRF). Our default implementation uses Gaussian Splatting (GS), but DeepDeblurRF is not limited to it.
+🔄 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). Our default implementation uses Gaussian Splatting (GS), but DeepDeblurRF is not limited to it.
 
 ## 🙏 Acknowledgements
 
 This project builds upon the following works. We thank the authors for open-sourcing their excellent codebases:
 
-- [NAFNet (CVPR 2023)](https://github.com/megvii-research/NAFNet)
+- [NAFNet (ECCV 2022)](https://github.com/megvii-research/NAFNet)
 - [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
-- [Plenoxels (NeurIPS 2021)](https://github.com/sxyu/plenoxels)
+- [Plenoxels / SVoX2 (svox2, CVPR 2022)](https://github.com/sxyu/svox2)
 
 ## 📖 Citation
 
