@@ -35,7 +35,7 @@ DeepDeblurRF is built as an iterative pipeline that progressively refines novel 
 - Each iteration uses `rf_{index}` as the input for COLMAP and a radiance field (RF) construction method.
 - Rendered views `trviews_{index}`, `tsviews_{index}` are generated from the trained RF.
 - RF-guided deblurring is applied using the original `blur` images and the rendered `trviews`, resulting in `deblur_{index+1}`.
-- NAFNet weights (`NAFNet-width64_k.yml`) change per iteration (up to 4 models); beyond that, the last model is reused.
+- NAFNet weights (`NAFNet-width64_k.yml`) change per iteration (up to 4 models).
 - On the final iteration, deblurring is skipped and `tsviews_4` is considered the final output.
 
 📁 Final results are saved in:
