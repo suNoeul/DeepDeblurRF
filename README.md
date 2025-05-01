@@ -40,12 +40,12 @@ DeepDeblurRF is built as an iterative pipeline that progressively refines novel 
 
 📁 Final results are saved in:
 ```
-data/<scene_name>/Final_results_iteration_4/
+data/<scene_name>/Final_results/
 ```
 
 📁 Example:
 ```
-data/cozyroom/Final_results_iteration_4/
+data/cozyroom/Final_results/
 ```
 
 🔄 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
