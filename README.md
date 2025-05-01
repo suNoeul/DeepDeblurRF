@@ -24,7 +24,7 @@ KT, POSTECH
 
 DeepDeblurRF is built as an iterative pipeline that progressively refines novel view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. The structure below summarizes the process:
 
-| Iteration (`index`) | RF Input Folder | Rendered Views (train/test) | NAFNet Weights Used       | RF-Guided Deblur Output | Final Output         |
+| Iteration (`index`) | RF Input Folder | Rendered Views (train/test) | NAFNet Settings       | RF-Guided Deblur Output | Final Output         |
 |---------------------|------------------|-------------------------------|----------------------------|--------------------------|-----------------------|
 | 0                   | `rf_0`           | `trviews_0`, `tsviews_0`     | `NAFNet-width64_1.yml`     | `deblur_1`               | ❌                    |
 | 1                   | `rf_1`           | `trviews_1`, `tsviews_1`     | `NAFNet-width64_2.yml`     | `deblur_2`               | ❌                    |
