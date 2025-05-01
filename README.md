@@ -20,7 +20,7 @@ KT, POSTECH
 [Feb 27, 2025] Code & dataset will be released soon  
 [Apr 2, 2025] Test dataset has been released! 🚀
 
-## 📦 Iterative Pipeline Structure in DeepDeblurRF
+## Iterative Pipeline Structure in DeepDeblurRF
 
 DeepDeblurRF is built as an iterative pipeline that progressively refines novel view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. The structure below summarizes the process:
 
@@ -48,9 +48,9 @@ data/<scene_name>/Final_results/
 data/cozyroom/Final_results/
 ```
 
-🔄 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
+**Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 This project builds upon the following works. We thank the authors for open-sourcing their excellent codebases:
 
@@ -58,7 +58,7 @@ This project builds upon the following works. We thank the authors for open-sour
 - [Plenoxels / SVoX2 (svox2, CVPR 2022)](https://github.com/sxyu/svox2)
 - [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
 
-## 📖 Citation
+## Citation
 
 If you find this work useful for your research, please consider citing:
 
