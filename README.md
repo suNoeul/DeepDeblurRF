@@ -38,12 +38,12 @@ DeepDeblurRF is built as an iterative pipeline that progressively refines novel 
 - NAFNet weights (`NAFNet-width64_k.yml`) change per iteration (up to 4 models).
 - On the final iteration, deblurring is skipped and `tsviews_4` is considered the final output.
 
-📁 Final results are saved in:
+Final results are saved in:
 ```
 data/<scene_name>/Final_results/
 ```
 
-📁 Example:
+Example:
 ```
 data/cozyroom/Final_results/
 ```
