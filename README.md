@@ -1,5 +1,5 @@
 # [CVPR 2025] Exploiting Deblurring Networks for Radiance Fields (DeepDeblurRF)<br><sub>- Official PyTorch Implementation -</sub>  
-🎯 *Fast and high-quality novel view synthesis from blurry images using iterative deblurring and radiance field construction.*
+*Fast and high-quality novel view synthesis from blurry images using iterative deblurring and radiance field construction.*
 
 [![Project Website](https://img.shields.io/badge/Project--blue)](https://haeyun-choi.github.io/DDRF_page/)
 [![arXiv](https://img.shields.io/badge/arXiv--b31b1b.svg)](https://arxiv.org/abs/2502.14454)
