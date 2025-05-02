@@ -19,7 +19,7 @@ KT, POSTECH
 
 ### 1. Download pretrained weights
 
-Download all pretrained NAFNet weights from the following link:
+Download all pretrained weights for the deblurring networks from the following link:
 
 [Google Drive - weights](https://drive.google.com/drive/folders/16QBdHTkZ7xUm2zqeBtLFNZaSD1Qx1h-R?usp=sharing)
 
@@ -37,7 +37,7 @@ Place your scene folder inside `data/`, e.g.:
 ```
 data/cozyroom/
 ├── blur/                  # blurry input images
-├── nv/                    # novel view images (held-out)
+├── nv/                    # novel view images (for NVS testing)
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
