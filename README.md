@@ -19,7 +19,7 @@ KT, POSTECH
 
 ### 0. Install requirements
 
-Create a conda environment and install the required Python packages:
+Clone the repository and set up the environment:
 
 ```bash
 git clone https://github.com/haeyun-choi/DeepDeblurRF.git
@@ -198,6 +198,7 @@ data/cozyroom/Final_results/
 [Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
 [Feb 27, 2025] Code & dataset will be released soon  
 [Apr 2, 2025] Test dataset has been released! 🚀
+[May 2, 2025] Test code has been released ✅
 
 ## Acknowledgements
 
