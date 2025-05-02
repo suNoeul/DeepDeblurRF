@@ -41,7 +41,7 @@ This repository includes **modified and integrated** versions of:
 - [NAFNet (ECCV 2022)](https://github.com/megvii-research/NAFNet)
 - [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
 
-You do **not** need to clone these separately. 
+You do **not** need to clone these separately.  
 All necessary code is included in this repository and already adapted for DeepDeblurRF.  
 Just follow the installation steps below inside the same conda environment (`ddrf`).
 
