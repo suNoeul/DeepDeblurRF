@@ -26,6 +26,10 @@ conda create -n ddrf python=3.8
 conda activate ddrf
 pip install -r requirements.txt
 
+cd NAFNet/
+python setup.py develop --no_cuda_ext
+```
+
 ### 1. Download pretrained weights
 
 Download all pretrained weights for the deblurring networks from the following link:
