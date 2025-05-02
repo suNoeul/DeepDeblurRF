@@ -1,5 +1,5 @@
 # [CVPR 2025] Exploiting Deblurring Networks for Radiance Fields (DeepDeblurRF)<br><sub>- Official PyTorch Implementation -</sub>  
-*Fast and high-quality novel view synthesis from blurry images using iterative deblurring and radiance field construction.*
+*Fast and high-quality novel-view synthesis from blurry images using iterative deblurring and radiance field construction.*
 
 [![Project Website](https://img.shields.io/badge/Project--blue)](https://haeyun-choi.github.io/DDRF_page/)
 [![arXiv](https://img.shields.io/badge/arXiv--b31b1b.svg)](https://arxiv.org/abs/2502.14454)
@@ -37,12 +37,12 @@ Place your scene folder inside `data/`, e.g.:
 ```
 data/cozyroom/
 ├── blur/                  # blurry input images
-├── nv/                    # novel view images (for NVS testing)
+├── nv/                    #  view images (for NVS testing)
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
 - `blur/` should contain the training images **excluding** holdout indices
-- `nv/` should contain the held-out images (those used for novel view synthesis testing)
+- `nv/` should contain the held-out images (those used for novel-view synthesis testing)
 
 ---
 
@@ -99,7 +99,7 @@ data/<scene_name>/Final_results/
 
 ## Iterative Pipeline Structure in DeepDeblurRF
 
-DeepDeblurRF is built as an iterative pipeline that progressively refines novel view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. 
+DeepDeblurRF is built as an iterative pipeline that progressively refines novel-view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. 
 
 The structure below summarizes the process:
 
