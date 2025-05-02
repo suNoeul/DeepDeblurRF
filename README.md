@@ -74,6 +74,7 @@ data/cozyroom/
 ```
 
 For example, if you have 34 images (`000.png` to `033.png`) and `hold=8`, 
+
 then the held-out indices for NVS testing will be:
 
 ```
