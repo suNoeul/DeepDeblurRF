@@ -34,10 +34,10 @@ The structure below summarizes the process:
 | 4                   | `rf_3`           | `trviews_4`, `tsviews_4`     | `NAFNet-width64_4.yml`     | `deblur_4`               | ❌                    |
 | 5                   | `rf_4`           | `trviews_5`, `tsviews_5`     | *(skipped)*                | *(not created)*          | ✅ `tsviews_5`         |
 
-- Iteration starts from `index = 1`, but uses `rf_{index-1}` as the radiance field input.
-- Each RF input is constructed from `deblur_{index-1}` and novel views (`nv`).
+- Iteration starts from `index = 1`. Each RF input `rf_{index-1}` is constructed from `deblur_{index-1}` and novel views (`nv`).
+- The initial deblur input `deblur_0` is generated beforehand via `preprocess.ipynb`.
 - Rendered views `trviews_{index}` and `tsviews_{index}` are generated from the trained RF.
-- RF-guided deblurring is applied using the original `blur` images and `trviews_{index}`, producing `deblur_{index}`.
+- RF-guided deblurring is applied using the original `blur` images and the rendered `trviews_{index}`, producing `deblur_{index}`.
 - NAFNet weights (`NAFNet-width64_k.yml`) change per iteration (up to 4 models).
 - On the final iteration (`index = 5`), deblurring is skipped and `tsviews_5` is considered the final output.
 
