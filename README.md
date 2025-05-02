@@ -73,8 +73,7 @@ data/cozyroom/
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
-For example, if you have 34 images (`000.png` to `033.png`) and `hold=8`, 
-
+For example, if you have 34 images (`000.png` to `033.png`) and `hold=8`,  
 then the held-out indices for NVS testing will be:
 
 ```
