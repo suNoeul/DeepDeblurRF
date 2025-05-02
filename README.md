@@ -26,8 +26,11 @@ conda create -n ddrf python=3.8
 conda activate ddrf
 pip install -r requirements.txt
 
-cd NAFNet/
-python setup.py develop --no_cuda_ext
+python ./NAFNet/setup.py develop --no_cuda_ext
+
+pip install ./gaussian-splatting/submodules/diff-gaussian-rasterization
+pip install ./gaussian-splatting/submodules/simple-knn
+
 ```
 
 ---
