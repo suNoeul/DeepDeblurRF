@@ -30,6 +30,8 @@ cd NAFNet/
 python setup.py develop --no_cuda_ext
 ```
 
+---
+
 ### 1. Download pretrained weights
 
 Download all pretrained weights for the deblurring networks from the following link:
