@@ -22,7 +22,9 @@ KT, POSTECH
 
 ## Iterative Pipeline Structure in DeepDeblurRF
 
-DeepDeblurRF is built as an iterative pipeline that progressively refines novel view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. The structure below summarizes the process:
+DeepDeblurRF is built as an iterative pipeline that progressively refines novel view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. 
+
+The structure below summarizes the process:
 
 | Iteration (`index`) | RF Input Folder | Rendered Views (train/test) | NAFNet Settings           | RF-Guided Deblur Output | Final Output         |
 |---------------------|------------------|-------------------------------|----------------------------|--------------------------|-----------------------|
