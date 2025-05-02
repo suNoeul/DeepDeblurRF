@@ -69,12 +69,18 @@ Place your scene folder inside `data/`, e.g.:
 ```
 data/cozyroom/
 ├── blur/                  # blurry input images
-├── nv/                    #  view images (for NVS testing)
+├── nv/                    # view images (for NVS testing)
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
-- `blur/` should contain the training images **excluding** holdout indices
-- `nv/` should contain the held-out images (those used for novel-view synthesis testing)
+For example, if you have 34 images (`000.png` to `033.png`) and `hold=8`, 
+then the held-out indices for NVS testing will be:
+
+```
+nv/ = [000.png, 008.png, 016.png, 024.png, 032.png]
+blur/ = all other images
+```
+
 
 ---
 
