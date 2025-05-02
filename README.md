@@ -19,7 +19,7 @@ KT, POSTECH
 
 ### 0. Install requirements
 
-Create a conda environment and install dependencies:
+Create a conda environment and install the required Python packages:
 
 ```bash
 git clone https://github.com/haeyun-choi/DeepDeblurRF.git
@@ -27,12 +27,20 @@ git clone https://github.com/haeyun-choi/DeepDeblurRF.git
 conda create -n ddrf python=3.8
 conda activate ddrf
 pip install -r requirements.txt
+```
 
-python ./NAFNet/setup.py develop --no_cuda_ext
+Then install the NAFNet module:
 
+```bash
+cd NAFNet
+python setup.py develop --no_cuda_ext
+```
+
+Finally, install additional modules required for Gaussian Splatting:
+
+```bash
 pip install ./gaussian-splatting/submodules/diff-gaussian-rasterization
 pip install ./gaussian-splatting/submodules/simple-knn
-
 ```
 
 ---
