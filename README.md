@@ -24,19 +24,20 @@ KT, POSTECH
 
 DeepDeblurRF is built as an iterative pipeline that progressively refines novel view synthesis from blurry inputs. Each iteration consists of radiance field (RF) construction and RF-guided deblurring. The structure below summarizes the process:
 
-| Iteration (`index`) | RF Input Folder | Rendered Views (train/test) | NAFNet Settings       | RF-Guided Deblur Output | Final Output         |
+| Iteration (`index`) | RF Input Folder | Rendered Views (train/test) | NAFNet Settings           | RF-Guided Deblur Output | Final Output         |
 |---------------------|------------------|-------------------------------|----------------------------|--------------------------|-----------------------|
-| 0                   | `rf_0`           | `trviews_0`, `tsviews_0`     | `NAFNet-width64_1.yml`     | `deblur_1`               | ❌                    |
-| 1                   | `rf_1`           | `trviews_1`, `tsviews_1`     | `NAFNet-width64_2.yml`     | `deblur_2`               | ❌                    |
-| 2                   | `rf_2`           | `trviews_2`, `tsviews_2`     | `NAFNet-width64_3.yml`     | `deblur_3`               | ❌                    |
-| 3                   | `rf_3`           | `trviews_3`, `tsviews_3`     | `NAFNet-width64_4.yml`     | `deblur_4`               | ❌                    |
-| 4                   | `rf_4`           | `trviews_4`, `tsviews_4`     | *(skipped)*                | *(not created)*          | ✅ `tsviews_4`         |
+| 1                   | `rf_0`           | `trviews_1`, `tsviews_1`     | `NAFNet-width64_1.yml`     | `deblur_1`               | ❌                    |
+| 2                   | `rf_1`           | `trviews_2`, `tsviews_2`     | `NAFNet-width64_2.yml`     | `deblur_2`               | ❌                    |
+| 3                   | `rf_2`           | `trviews_3`, `tsviews_3`     | `NAFNet-width64_3.yml`     | `deblur_3`               | ❌                    |
+| 4                   | `rf_3`           | `trviews_4`, `tsviews_4`     | `NAFNet-width64_4.yml`     | `deblur_4`               | ❌                    |
+| 5                   | `rf_4`           | `trviews_5`, `tsviews_5`     | *(skipped)*                | *(not created)*          | ✅ `tsviews_5`         |
 
-- Each iteration uses `rf_{index}` as the input for COLMAP and a radiance field (RF) construction method.
-- Rendered views `trviews_{index}`, `tsviews_{index}` are generated from the trained RF.
-- RF-guided deblurring is applied using the original `blur` images and the rendered `trviews`, resulting in `deblur_{index+1}`.
+- Iteration starts from `index = 1`, but uses `rf_{index-1}` as the radiance field input.
+- Each RF input is constructed from `deblur_{index-1}` and novel views (`nv`).
+- Rendered views `trviews_{index}` and `tsviews_{index}` are generated from the trained RF.
+- RF-guided deblurring is applied using the original `blur` images and `trviews_{index}`, producing `deblur_{index}`.
 - NAFNet weights (`NAFNet-width64_k.yml`) change per iteration (up to 4 models).
-- On the final iteration, deblurring is skipped and `tsviews_4` is considered the final output.
+- On the final iteration (`index = 5`), deblurring is skipped and `tsviews_5` is considered the final output.
 
 Final results are saved in:
 ```
