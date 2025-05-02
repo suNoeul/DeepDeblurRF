@@ -15,10 +15,90 @@ KT, POSTECH
 ## Abstract
 *In this paper, we propose DeepDeblurRF, a novel radiance field deblurring approach that can synthesize high-quality novel views from blurred training views with significantly reduced training time. DeepDeblurRF leverages deep neural network (DNN)-based deblurring modules to enjoy their deblurring performance and computational efficiency. To effectively combine DNN-based deblurring and radiance field construction, we propose a novel radiance field (RF)-guided deblurring and an iterative framework that performs RF-guided deblurring and radiance field construction in an alternating manner. Moreover, DeepDeblurRF is compatible with various scene representations, such as voxel grids and 3D Gaussians, expanding its applicability. We also present BlurRF-Synth, the first large-scale synthetic dataset for training radiance field deblurring frameworks. We conduct extensive experiments on both camera motion blur and defocus blur, demonstrating that DeepDeblurRF achieves state-of-the-art novel-view synthesis quality with significantly reduced training time.*
 
-## News  
-[Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
-[Feb 27, 2025] Code & dataset will be released soon  
-[Apr 2, 2025] Test dataset has been released! 🚀
+## Getting Started
+
+### 1. Download pretrained weights
+
+Download all pretrained NAFNet weights from the following link:
+
+[Google Drive - weights](https://drive.google.com/drive/folders/16QBdHTkZ7xUm2zqeBtLFNZaSD1Qx1h-R?usp=sharing)
+
+Place them in:
+```
+DDRF/NAFNet/weights/
+```
+
+---
+
+### 2. Prepare your test data
+
+Place your scene folder inside `data/`, e.g.:
+
+```
+data/cozyroom/
+├── blur/                  # blurry input images
+├── nv/                    # novel view images (held-out)
+├── hold=<k>               # NVS split (e.g., 1 every k frames)
+```
+
+- `blur/` should contain the training images **excluding** holdout indices
+- `nv/` should contain the held-out images (those used for novel view testing)
+
+---
+
+### 3. Run preprocessing
+
+Open and run `preprocess.ipynb`. It performs:
+
+- Initial deblurring with SD-NAFNet → `deblur/deblur_0/`
+- Radiance field setup → `rf/rf_0/images/`
+
+Expected result structure:
+
+```
+data/cozyroom/
+├── blur/
+├── nv/
+├── hold=<k>
+├── deblur/
+│   └── deblur_0/
+├── rf/
+│   └── rf_0/
+│       └── images/
+```
+
+---
+
+### 4. Run the DDRF pipeline
+
+Choose the appropriate config file based on your dataset:
+
+```
+configs/
+├── blurrf_synth/
+│   ├── motion/
+│   └── defocus/
+├── blurrf_real/
+├── dbnerf_real/
+```
+
+Example:
+```bash
+python ddrf.py -c configs/blurrf_synth/motion/cozyroom.txt
+```
+
+This will run the full iterative training and deblurring pipeline.
+
+Final novel-view synthesis results will be saved in:
+```
+data/<scene_name>/Final_results/
+```
+
+along with test-time metrics in:
+```
+data/<scene_name>/metrics.txt
+```
+
 
 ## Iterative Pipeline Structure in DeepDeblurRF
 
@@ -52,6 +132,11 @@ data/cozyroom/Final_results/
 ```
 
 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
+
+## News  
+[Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
+[Feb 27, 2025] Code & dataset will be released soon  
+[Apr 2, 2025] Test dataset has been released! 🚀
 
 ## Acknowledgements
 
