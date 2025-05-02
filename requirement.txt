@@ -1,0 +1,23 @@
+# --- Core dependencies ---
+numpy==1.24.4
+scipy==1.10.1
+scikit-image==0.19.0
+matplotlib==3.7.5
+imageio>=2.31.1
+pillow==9.4.0
+tensorboard==2.14.0
+tqdm
+pyyaml
+requests
+joblib
+cmake
+ninja
+opencv-python
+pywavelets
+plyfile
+
+# --- NAFNet specific ---
+addict
+future
+lmdb
+yapf
