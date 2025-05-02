@@ -206,7 +206,7 @@ data/cozyroom/Final_results/
 This project builds upon the following works. We thank the authors for open-sourcing their excellent codebases:
 
 - [NAFNet (ECCV 2022)](https://github.com/megvii-research/NAFNet)
-- [Plenoxels / SVoX2 (CVPR 2022)](https://github.com/sxyu/svox2)
+- [Plenoxels (CVPR 2022)](https://github.com/sxyu/svox2)
 - [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
 - [LLFF: Local Light Field Fusion (SIGGRAPH 2019)](https://github.com/Fyusion/LLFF)
 
