@@ -198,7 +198,7 @@ data/cozyroom/Final_results/
 ## News  
 [Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
 [Feb 27, 2025] Code & dataset will be released soon  
-[Apr 2, 2025] Test dataset has been released! 🚀
+[Apr 2, 2025] Test dataset has been released! 🚀  
 [May 2, 2025] Test code has been released ✅
 
 ## Acknowledgements
