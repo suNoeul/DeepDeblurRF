@@ -44,7 +44,7 @@ This repository includes **modified and integrated** versions of:
 You do **not** need to clone these separately. All necessary code is included in this repository and already adapted for DeepDeblurRF.  
 Just follow the installation steps below inside the same conda environment (`ddrf`).
 
-##### a. Build NAFNet (for both SD and RF-guided deblurring)
+##### a. Build NAFNet
 
 ```bash
 cd NAFNet/
@@ -58,7 +58,7 @@ pip install ./gaussian-splatting/submodules/diff-gaussian-rasterization
 pip install ./gaussian-splatting/submodules/simple-knn
 ```
 
-##### c. Clone and install LLFF (used for COLMAP pose estimation)
+##### c. Clone and install LLFF 
 
 LLFF is included as a Git submodule. Initialize it after cloning this repository:
 
