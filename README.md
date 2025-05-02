@@ -22,6 +22,8 @@ KT, POSTECH
 Create a conda environment and install dependencies:
 
 ```bash
+git clone https://github.com/haeyun-choi/DeepDeblurRF.git
+
 conda create -n ddrf python=3.8
 conda activate ddrf
 pip install -r requirements.txt
