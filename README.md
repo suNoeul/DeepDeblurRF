@@ -86,7 +86,7 @@ blur/ = all other images
 
 ### 3. Run preprocessing
 
-Open and run `preprocess.ipynb`. It performs:
+Open and run `preprocessing.ipynb`. It performs:
 
 - Initial deblurring with NAFNet_SD → `deblur/deblur_0/`
 - Radiance field setup → `rf/rf_0/images/`
