@@ -42,7 +42,7 @@ data/cozyroom/
 ```
 
 - `blur/` should contain the training images **excluding** holdout indices
-- `nv/` should contain the held-out images (those used for novel view testing)
+- `nv/` should contain the held-out images (those used for novel view synthesis testing)
 
 ---
 
@@ -50,7 +50,7 @@ data/cozyroom/
 
 Open and run `preprocess.ipynb`. It performs:
 
-- Initial deblurring with SD-NAFNet → `deblur/deblur_0/`
+- Initial deblurring with NAFNet_SD → `deblur/deblur_0/`
 - Radiance field setup → `rf/rf_0/images/`
 
 Expected result structure:
@@ -65,6 +65,7 @@ data/cozyroom/
 ├── rf/
 │   └── rf_0/
 │       └── images/
+│       └── hold=<k>
 ```
 
 ---
@@ -80,6 +81,8 @@ configs/
 │   └── defocus/
 ├── blurrf_real/
 ├── dbnerf_real/
+│   ├── motion/
+│   └── defocus/
 ```
 
 Example:
@@ -93,12 +96,6 @@ Final novel-view synthesis results will be saved in:
 ```
 data/<scene_name>/Final_results/
 ```
-
-along with test-time metrics in:
-```
-data/<scene_name>/metrics.txt
-```
-
 
 ## Iterative Pipeline Structure in DeepDeblurRF
 
