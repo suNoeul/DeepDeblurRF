@@ -17,6 +17,15 @@ KT, POSTECH
 
 ## Getting Started
 
+### 0. Install requirements
+
+Create a conda environment and install dependencies:
+
+```bash
+conda create -n ddrf python=3.8
+conda activate ddrf
+pip install -r requirements.txt
+
 ### 1. Download pretrained weights
 
 Download all pretrained weights for the deblurring networks from the following link:
