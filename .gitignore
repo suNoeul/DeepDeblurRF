@@ -3,7 +3,6 @@ configs/*
 __pycache__/
 *.pyc
 *.egg-info/
-LLFF
 
 gaussian-splatting/SIBR_viewers
 gaussian-splatting/.vscode
