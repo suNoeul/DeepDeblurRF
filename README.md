@@ -172,7 +172,7 @@ Example:
 data/cozyroom/Final_results/
 ```
 
-**Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
+**Note:** The 3D Gaussian splatting can be replaced with other RF representations (e.g., voxel grids, NeRF). 
 
 
 ## Dataset
