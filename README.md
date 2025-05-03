@@ -79,7 +79,7 @@ Place your scene folder inside `data/`, e.g.:
 ```
 data/cozyroom/
 ├── blur/                  # blurry input images
-├── nv/                    # view images (for NVS testing)
+├── nv/                    # sharp images (for NVS testing)
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
