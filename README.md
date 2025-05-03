@@ -195,6 +195,30 @@ data/cozyroom/Final_results/
 
 **Note:** The radiance field module used in each iteration is modular and can be replaced with other RF representations (e.g., voxel grids, NeRF). 
 
+
+## Dataset
+
+Training the deblurring modules of our framework requires a large-scale dataset of blurred images paired with ground-truth sharp images.  
+
+### 🔹 BlurRF-Synth
+
+- The **first large-scale multi-view blur-sharp dataset** for radiance field deblurring.
+- Contains **4,350 blurred-sharp image pairs across 150 scenes**
+  - 2,175 pairs for motion blur
+  - 2,175 pairs for defocus blur
+- Simulates real-world degradations: **camera noise, saturated pixels, nonlinear ISP artifacts**
+
+### 🔹 BlurRF-Real (Evaluation Dataset)
+
+- A small real-world dataset captured under challenging conditions
+- 5 indoor scenes with **camera motion blur**, **low-light**, and **high noise**
+- Captured using a machine vision camera for realistic evaluation
+
+📥 Download the datasets:
+- [BlurRF-Synth](https://drive.google.com/drive/folders/1kxmqAY-1Mq852Mm75CaeainFGnIeGPkF)
+- [BlurRF-Real](https://drive.google.com/drive/folders/1vEAxwRSNV-2ck7l08sAizdA9GvC5Iz28)
+
+
 ## News  
 [Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
 [Feb 27, 2025] Code & dataset will be released soon  
