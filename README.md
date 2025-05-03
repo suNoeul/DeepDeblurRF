@@ -42,13 +42,6 @@ pip install -r requirements.txt
 ```
 
 #### Build external components
-
-The following components are already included in this repository (no need to clone separately):
-
-- **NAFNet** 
-- **Gaussian Splatting** 
-- **LLFF**
-
 Install them as follows:
 
 ```bash
