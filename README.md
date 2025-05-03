@@ -23,6 +23,7 @@ Clone the repository and set up the environment:
 
 ```bash
 git clone https://github.com/haeyun-choi/DeepDeblurRF.git
+cd DeepDeblurRF
 
 conda create -n ddrf python=3.8
 conda activate ddrf
@@ -33,44 +34,30 @@ pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 \
 pip install -r requirements.txt
 ```
 
+#### Build external components
 
-#### External Dependencies
+The following components are already included in this repository (no need to clone separately):
 
-This repository includes **modified and integrated** versions of:
+- **NAFNet** 
+- **Gaussian Splatting** 
+- **LLFF**
 
-- [NAFNet (ECCV 2022)](https://github.com/megvii-research/NAFNet)
-- [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
-
-You do **not** need to clone these separately.  
-All necessary code is included in this repository and already adapted for DeepDeblurRF.  
-Just follow the installation steps below inside the same conda environment (`ddrf`).
-
-##### a. Build NAFNet
+Install them as follows:
 
 ```bash
+# NAFNet
 cd NAFNet/
 python setup.py develop --no_cuda_ext
-```
 
-##### b. Install Gaussian Splatting submodules
+# Gaussian Splatting submodules
+cd gaussian-splatting
+pip install ./submodules/diff-gaussian-rasterization
+pip install ./submodules/simple-knn
 
-```bash
-pip install ./gaussian-splatting/submodules/diff-gaussian-rasterization
-pip install ./gaussian-splatting/submodules/simple-knn
-```
-
-##### c. Clone and install LLFF 
-
-LLFF is included as a Git submodule. Initialize it after cloning this repository:
-
-```bash
+# LLFF
 git submodule update --init --recursive
-```
-
-Then install its requirements:
-
-```bash
-pip install -r LLFF/requirements.txt
+cd LLFF
+pip install -r requirements.txt
 sudo apt-get install libglfw3-dev
 ```
 
