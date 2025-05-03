@@ -181,7 +181,7 @@ Training the deblurring modules of our framework requires a large-scale dataset 
 
 ### BlurRF-Synth
 
-- The **first large-scale multi-view dataset** for radiance field deblurring.
+- The **first large-scale multi-view dataset** for radiance field deblurring
 - Contains 4,350 blurred-sharp image pairs across 150 scenes
   - 2,175 pairs for camera motion blur
   - 2,175 pairs for defocus blur
