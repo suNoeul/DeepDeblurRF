@@ -194,8 +194,7 @@ Training the deblurring modules of our framework requires a large-scale dataset 
 - Captured using a machine vision camera for realistic evaluation
 
 #### Download the datasets:
-- [BlurRF-Synth](https://drive.google.com/drive/folders/1kxmqAY-1Mq852Mm75CaeainFGnIeGPkF)
-- [BlurRF-Real](https://drive.google.com/drive/folders/1vEAxwRSNV-2ck7l08sAizdA9GvC5Iz28)
+- [BlurRF Datasets](https://drive.google.com/drive/folders/12t5J8VW102c2eXuj90RY9nVw5Uyv2YQ8)
 
 
 ## Acknowledgements
