@@ -41,8 +41,7 @@ pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 \
 pip install -r requirements.txt
 ```
 
-#### Build external components
-Install them as follows:
+Build external components:
 
 ```bash
 # NAFNet
