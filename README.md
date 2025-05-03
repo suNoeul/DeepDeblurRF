@@ -181,13 +181,13 @@ Training the deblurring modules of our framework requires a large-scale dataset 
 
 ### BlurRF-Synth
 
-- The **first large-scale multi-view blur-sharp dataset** for radiance field deblurring.
+- The **first large-scale multi-view dataset** for radiance field deblurring.
 - Contains 4,350 blurred-sharp image pairs across 150 scenes
   - 2,175 pairs for motion blur
   - 2,175 pairs for defocus blur
 - Simulates real-world degradations: camera noise, saturated pixels, nonlinear ISP artifacts
 
-### BlurRF-Real (Evaluation Dataset)
+### BlurRF-Real
 
 - A small real-world dataset captured under challenging conditions
 - 5 indoor scenes with camera motion blur, low-light, and high noise
