@@ -15,6 +15,13 @@ KT, POSTECH
 ## Abstract
 *In this paper, we propose DeepDeblurRF, a novel radiance field deblurring approach that can synthesize high-quality novel views from blurred training views with significantly reduced training time. DeepDeblurRF leverages deep neural network (DNN)-based deblurring modules to enjoy their deblurring performance and computational efficiency. To effectively combine DNN-based deblurring and radiance field construction, we propose a novel radiance field (RF)-guided deblurring and an iterative framework that performs RF-guided deblurring and radiance field construction in an alternating manner. Moreover, DeepDeblurRF is compatible with various scene representations, such as voxel grids and 3D Gaussians, expanding its applicability. We also present BlurRF-Synth, the first large-scale synthetic dataset for training radiance field deblurring frameworks. We conduct extensive experiments on both camera motion blur and defocus blur, demonstrating that DeepDeblurRF achieves state-of-the-art novel-view synthesis quality with significantly reduced training time.*
 
+## News  
+[Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
+[Feb 27, 2025] Code & dataset will be released soon  
+[Apr 2, 2025] Test dataset has been released! 🚀  
+[May 2, 2025] Test code has been released! ✅  
+[May 3, 2025] Train dataset has been released! 🚀
+
 ## Getting Started
 
 ### 0. Install requirements
@@ -198,13 +205,6 @@ Training the deblurring modules of our framework requires a large-scale dataset 
 - [BlurRF-Synth](https://drive.google.com/drive/folders/1kxmqAY-1Mq852Mm75CaeainFGnIeGPkF)
 - [BlurRF-Real](https://drive.google.com/drive/folders/1vEAxwRSNV-2ck7l08sAizdA9GvC5Iz28)
 
-
-## News  
-[Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
-[Feb 27, 2025] Code & dataset will be released soon  
-[Apr 2, 2025] Test dataset has been released! 🚀  
-[May 2, 2025] Test code has been released! ✅  
-[May 3, 2025] Train dataset has been released! 🚀
 
 ## Acknowledgements
 
