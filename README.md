@@ -17,7 +17,7 @@ KT, POSTECH
 
 ## News  
 [May 3, 2025] Train dataset released 🚀  
-[May 2, 2025] Test code and pretrained model weights are now available ✅
+[May 2, 2025] Test code and pretrained model weights are now available ✅  
 [Apr 2, 2025] Test dataset released 🚀  
 [Feb 27, 2025] Code & dataset will be released soon  
 [Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉
