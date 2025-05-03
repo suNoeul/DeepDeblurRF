@@ -193,7 +193,7 @@ data/cozyroom/Final_results/
 
 Training the deblurring modules of our framework requires a large-scale dataset of blurred images paired with ground-truth sharp images.  
 
-### 🔹 BlurRF-Synth
+### BlurRF-Synth
 
 - The **first large-scale multi-view blur-sharp dataset** for radiance field deblurring.
 - Contains **4,350 blurred-sharp image pairs across 150 scenes**
@@ -201,7 +201,7 @@ Training the deblurring modules of our framework requires a large-scale dataset 
   - 2,175 pairs for defocus blur
 - Simulates real-world degradations: **camera noise, saturated pixels, nonlinear ISP artifacts**
 
-### 🔹 BlurRF-Real (Evaluation Dataset)
+### BlurRF-Real (Evaluation Dataset)
 
 - A small real-world dataset captured under challenging conditions
 - 5 indoor scenes with **camera motion blur**, **low-light**, and **high noise**
@@ -216,7 +216,7 @@ Training the deblurring modules of our framework requires a large-scale dataset 
 [Feb 26, 2025] Our paper has been accepted to CVPR 2025! 🎉  
 [Feb 27, 2025] Code & dataset will be released soon  
 [Apr 2, 2025] Test dataset has been released! 🚀  
-[May 2, 2025] Test code has been released ✅  
+[May 2, 2025] Test code has been released! ✅  
 [May 3, 2025] Train dataset has been released! 🚀
 
 ## Acknowledgements
