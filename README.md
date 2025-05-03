@@ -74,8 +74,6 @@ pip install -r LLFF/requirements.txt
 sudo apt-get install libglfw3-dev
 ```
 
----
-
 ### 1. Download pretrained weights
 
 Download all pretrained weights for the deblurring networks from the following link:
@@ -86,8 +84,6 @@ Place them in:
 ```
 DDRF/NAFNet/weights/
 ```
-
----
 
 ### 2. Prepare your test data
 
@@ -108,8 +104,6 @@ nv/ = [000.png, 008.png, 016.png, 024.png, 032.png]
 blur/ = all other images
 ```
 
-
----
 
 ### 3. Run preprocessing
 
@@ -133,7 +127,6 @@ data/cozyroom/
 │       └── hold=<k>
 ```
 
----
 
 ### 4. Run the DDRF pipeline
 
