@@ -1,5 +1,0 @@
-scene_name = "cozyroom"
-scene_type = "motion" 
-gpu = "0"
-max_index = 5
-iteration_list = [10000, 10000, 10000, 10000, 20000]
