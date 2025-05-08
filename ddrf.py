@@ -2,6 +2,7 @@ import os
 import cv2
 import time
 import numpy as np
+import shutil
 import subprocess
 import argparse
 from PIL import Image
@@ -37,7 +38,7 @@ def run_colmap_with_retries(imgs2poses_py, rf_folder, expected_images, retries=1
         for item in ['sparse', 'colmap_output.txt', 'database.db']:
             path = os.path.join(rf_folder, item)
             if os.path.isdir(path):
-                subprocess.run(['rm', '-rf', path])
+                shutil.rmtree(path)
             elif os.path.isfile(path):
                 os.remove(path)
     raise RuntimeError(f"[COLMAP] Failed after {retries} attempts for {rf_folder}")
@@ -78,15 +79,15 @@ gpu_id = config.get('gpu', '0')
 scene_type = config['scene_type']
 os.environ['CUDA_VISIBLE_DEVICES'] = gpu_id
 
-ddrf_root = '/DDRF'
+ddrf_root = './'
 scene_root = os.path.join(ddrf_root, 'data', scene_name)
 rendered_root = os.path.join(scene_root, 'rendered')
 metrics_file = os.path.join(scene_root, 'metrics.txt')
 os.makedirs(rendered_root, exist_ok=True)
 
-imgs2poses_py = os.path.join(ddrf_root, 'LLFF/imgs2poses.py')
-train_py = os.path.join(ddrf_root, 'gaussian-splatting/train.py')
-render_py = os.path.join(ddrf_root, 'gaussian-splatting/render.py')
+imgs2poses_py = os.path.join(ddrf_root, 'LLFF', 'imgs2poses.py')
+train_py = os.path.join(ddrf_root, 'gaussian-splatting', 'train.py')
+render_py = os.path.join(ddrf_root, 'gaussian-splatting', 'render.py')
 
 hold_txt = [f for f in os.listdir(scene_root) if f.startswith('hold=')][0]
 hold_val = int(hold_txt.split('=')[-1])
@@ -104,15 +105,11 @@ for index in range(1, max_index + 1):
 
     os.makedirs(os.path.join(rf_folder, 'images'), exist_ok=True)
     for f in sorted(os.listdir(deblur_input)):
-        src = os.path.join(deblur_input, f)
-        dst = os.path.join(rf_folder, 'images', f)
-        subprocess.run(['cp', src, dst])
+        shutil.copy(os.path.join(deblur_input, f), os.path.join(rf_folder, 'images', f))
     for f in sorted(os.listdir(os.path.join(scene_root, 'nv'))):
-        src = os.path.join(scene_root, 'nv', f)
-        dst = os.path.join(rf_folder, 'images', f)
-        subprocess.run(['cp', src, dst])
+        shutil.copy(os.path.join(scene_root, 'nv', f), os.path.join(rf_folder, 'images', f))
     hold_file = [f for f in os.listdir(scene_root) if f.startswith('hold=')][0]
-    subprocess.run(['cp', os.path.join(scene_root, hold_file), rf_folder])
+    shutil.copy(os.path.join(scene_root, hold_file), rf_folder)
 
     image_dir = os.path.join(rf_folder, 'images')
     expected_images = len([f for f in os.listdir(image_dir) if f.endswith('.png')])
@@ -124,11 +121,16 @@ for index in range(1, max_index + 1):
     test_ids = [i for i in image_ids if i % hold_val == 0]
 
     expname = f'{scene_name}_{index}'
-    iter_str = f"--iterations {iterations}"
-    test_iter_str = '--test_iterations ' + ' '.join(map(str, [iterations]))
-    save_iter_str = '--save_iterations ' + ' '.join(map(str, [iterations]))
-    command = f"python {train_py} --expname {expname} -s {rf_folder} --port 8888 --eval {iter_str} {test_iter_str} {save_iter_str}"
-    subprocess.call(command, shell=True)
+    command = [
+        'python', train_py,
+        '--expname', expname,
+        '-s', rf_folder,
+        '--port', '8888',
+        '--eval', '--iterations', str(iterations),
+        '--test_iterations', str(iterations),
+        '--save_iterations', str(iterations)
+    ]
+    subprocess.run(command)
 
     log_path = os.path.join(scene_root, 'metrics_log.txt')
     psnr, ssim, lpips = extract_metrics(log_path)
@@ -139,7 +141,7 @@ for index in range(1, max_index + 1):
     model_dir = os.path.join(ddrf_root, 'output', expname)
     render_iter = iterations
     render_cmd = ['python', render_py, '-m', model_dir, '--iteration', str(render_iter), '--quiet']
-    subprocess.call(render_cmd)
+    subprocess.run(render_cmd)
 
     trviews_path = os.path.join(rendered_root, f'trviews_{index}')
     tsviews_path = os.path.join(rendered_root, f'tsviews_{index}')
@@ -151,21 +153,16 @@ for index in range(1, max_index + 1):
     for (src_dir, dst_dir, id_list) in [(train_render, trviews_path, train_ids), (test_render, tsviews_path, test_ids)]:
         if os.path.isdir(src_dir):
             for idx, f in enumerate(sorted(os.listdir(src_dir))):
-                src_file = os.path.join(src_dir, f)
-                new_name = f"{id_list[idx]:03d}.png"
-                dst_file = os.path.join(dst_dir, new_name)
-                subprocess.run(['cp', src_file, dst_file])
+                shutil.copy(os.path.join(src_dir, f), os.path.join(dst_dir, f"{id_list[idx]:03d}.png"))
 
     if index == max_index:
         final_results_dir = os.path.join(scene_root, f'Final_results')
         os.makedirs(final_results_dir, exist_ok=True)
         for f in sorted(os.listdir(tsviews_path)):
-            src = os.path.join(tsviews_path, f)
-            dst = os.path.join(final_results_dir, f)
-            subprocess.run(['cp', src, dst])
+            shutil.copy(os.path.join(tsviews_path, f), os.path.join(final_results_dir, f))
 
     if index < max_index:
-        opt_path = f'./NAFNet/options/test/DDRF_G/{scene_type}/NAFNet-width64_{min(index, 4)}.yml'
+        opt_path = os.path.join(ddrf_root, 'NAFNet', 'options', 'test', 'DDRF_G', scene_type, f'NAFNet-width64_{min(index, 4)}.yml')
         opt = parse(opt_path, is_train=False)
         opt['dist'] = False
         NAFNet = create_model(opt)

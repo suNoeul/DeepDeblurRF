@@ -34,7 +34,7 @@ network_g:
 
 # path
 path:
-  pretrain_network_g: /DDRF/NAFNet/weights/DDRF_G/defocus/initial_deblurring.pth
+  pretrain_network_g: ./NAFNet/weights/DDRF_G/defocus/initial_deblurring.pth
   strict_load_g: true
   resume_state: ~
 

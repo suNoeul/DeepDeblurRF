@@ -1,8 +1,7 @@
-data/*
-configs/*
 __pycache__/
 *.pyc
 *.egg-info/
+/README.md
 
 gaussian-splatting/SIBR_viewers
 gaussian-splatting/.vscode
@@ -20,4 +19,4 @@ NAFNet/logs/
 NAFNet/*results*
 NAFNet/*.sh
 NAFNet/datasets
-NAFNet/weights/*
+NAFNet/weights/*README.md
