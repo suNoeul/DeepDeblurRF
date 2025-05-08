@@ -35,7 +35,7 @@ cd DeepDeblurRF
 conda create -n ddrf python=3.8
 conda activate ddrf
 
-# Adjust the CUDA version according to your environment:
+# Adjust the CUDA version according to your environment
 # See: https://pytorch.org/get-started/locally/
 pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 -f https://download.pytorch.org/whl/cu116/torch_stable.html
 
