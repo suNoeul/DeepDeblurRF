@@ -1,5 +1,0 @@
-scene_name = "tanabata"
-scene_type = "defocus" 
-gpu = "2"
-max_index = 5
-iteration_list = [10000, 10000, 10000, 10000, 20000]
