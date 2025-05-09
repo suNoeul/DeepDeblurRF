@@ -69,7 +69,7 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, images_folder):
     cam_infos = []
     #####################################################################Deblurring-3D-Gaussain-Splatting Code#####################################################################
     if cam_intrinsics[cam_extrinsics[1].camera_id].model=="SIMPLE_RADIAL":
-        focal_path = "/".join(images_folder.split("/")[:-1]) + "/poses_bounds.npy"
+        focal_path = os.path.join(os.path.dirname(images_folder), "poses_bounds.npy")
         focal_length_x = np.load(focal_path)[0,-3]
     #####################################################################Deblurring-3D-Gaussain-Splatting Code#####################################################################
     

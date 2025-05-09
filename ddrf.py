@@ -28,9 +28,9 @@ def single_image_inference(model, img, save_path):
     sr_img = tensor2img([visuals['result']])
     imwrite(sr_img, save_path)
 
-def run_colmap_with_retries(imgs2poses_py, rf_folder, expected_images, retries=10):
+def run_colmap_with_retries(imgs2poses_py, rf_folder, expected_images, retries=100):
     for attempt in range(retries):
-        subprocess.run(['python3', imgs2poses_py, rf_folder])
+        subprocess.run(['python', imgs2poses_py, rf_folder])
         if os.path.exists(os.path.join(rf_folder, 'poses_bounds.npy')):
             print(f"[COLMAP] Success on attempt {attempt+1} (poses_bounds.npy found).")
             return
@@ -72,6 +72,7 @@ config = {}
 with open(args.config) as f:
     exec(f.read(), config)
 
+start_index = config.get('start_index', 1)  # 기본값 1
 max_index = config['max_index']
 iteration_list = config['iteration_list']
 scene_name = config['scene_name']
@@ -94,7 +95,7 @@ hold_val = int(hold_txt.split('=')[-1])
 
 total_start_time = time.time()
 
-for index in range(1, max_index + 1):
+for index in range(start_index, max_index + 1):
     start_time = time.time()
     iterations = iteration_list[index - 1]
     rf_input_index = index - 1

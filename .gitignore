@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 *.egg-info/
 /README.md
+/output
 
 gaussian-splatting/SIBR_viewers
 gaussian-splatting/.vscode
@@ -20,3 +21,4 @@ NAFNet/*results*
 NAFNet/*.sh
 NAFNet/datasets
 NAFNet/weights/*README.md
+NAFNet/.eggs

@@ -1,5 +1,6 @@
 scene_name = "blurball"
 scene_type = "motion_dbnerf_real" # motion, defocus, motion_dbnerf_real, defocus_dbnerf_real
-gpu = "3"
+gpu = "0"
+start_index = 5
 max_index = 5
 iteration_list = [5000, 5000, 5000, 20000, 20000]
