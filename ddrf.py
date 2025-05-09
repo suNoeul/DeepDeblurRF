@@ -72,7 +72,7 @@ config = {}
 with open(args.config) as f:
     exec(f.read(), config)
 
-start_index = config.get('start_index', 1)  # 기본값 1
+start_index = config.get('start_index', 1)  # Default 1
 max_index = config['max_index']
 iteration_list = config['iteration_list']
 scene_name = config['scene_name']
