@@ -56,9 +56,6 @@ pip install ./submodules/simple-knn
 
 # LLFF
 git submodule update --init --recursive
-cd LLFF
-pip install -r requirements.txt
-sudo apt-get install libglfw3-dev
 ```
 
 ### 1. Download pretrained weights
