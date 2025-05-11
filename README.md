@@ -56,7 +56,7 @@ pip install ./submodules/simple-knn
 
 # LLFF
 git submodule update --init --recursive
-# Replace COLMAP wrapper with custom version for SIMPLE_PINHOLE setup
+# Replace COLMAP wrapper with custom version
 cp ./colmap_wrapper.py ./LLFF/llff/poses/colmap_wrapper.py
 ```
 
