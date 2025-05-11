@@ -56,6 +56,8 @@ pip install ./submodules/simple-knn
 
 # LLFF
 git submodule update --init --recursive
+# Replace COLMAP wrapper with custom version for SIMPLE_PINHOLE setup
+cp ./colmap_wrapper.py ./LLFF/llff/poses/colmap_wrapper.py
 ```
 
 ### 1. Download pretrained weights
@@ -66,7 +68,7 @@ Download all pretrained weights for the deblurring networks from the following l
 
 Place them in:
 ```
-DDRF/NAFNet/weights/
+DeepDeblurRF/NAFNet/weights/
 ```
 
 ### 2. Prepare your test data
@@ -112,7 +114,7 @@ data/cozyroom/
 ```
 
 
-### 4. Run the DDRF pipeline
+### 4. Run the DeepDeblurRF pipeline
 
 Choose the appropriate config file based on your dataset:
 
@@ -129,7 +131,7 @@ configs/
 
 Example:
 ```bash
-python ddrf.py -c configs/blurrf_synth/motion/cozyroom.txt
+python DeepDeblurRF.py -c configs/blurrf_synth/motion/cozyroom.txt
 ```
 
 This will run the full iterative training and deblurring pipeline.
