@@ -201,10 +201,11 @@ Training the deblurring modules of our framework requires a large-scale dataset 
 
 This project builds upon the following works. We thank the authors for open-sourcing their excellent codebases:
 
+- [LLFF: Local Light Field Fusion (SIGGRAPH 2019)](https://github.com/Fyusion/LLFF)
 - [NAFNet (ECCV 2022)](https://github.com/megvii-research/NAFNet)
 - [Plenoxels (CVPR 2022)](https://github.com/sxyu/svox2)
 - [3D Gaussian Splatting (SIGGRAPH 2023)](https://github.com/graphdeco-inria/gaussian-splatting)
-- [LLFF: Local Light Field Fusion (SIGGRAPH 2019)](https://github.com/Fyusion/LLFF)
+- [Deblurring 3D Gaussian Splatting (ECCV 2024)](https://github.com/benhenryL/Deblurring-3D-Gaussian-Splatting)
 
 ## Citation
 
