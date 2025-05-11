@@ -60,6 +60,14 @@ git submodule update --init --recursive
 cp ./colmap_wrapper.py ./LLFF/llff/poses/colmap_wrapper.py
 ```
 
+⚠️ **Windows users:**  
+In `LLFF/llff/poses/colmap_wrapper.py`, remove `'xvfb-run', '-a'` from:
+
+- Line 12 (`feature_extractor_args`)
+- Line 28 (`mapper_args`)
+
+`xvfb-run` is for Linux only and will cause errors on Windows.
+
 ### 1. Download pretrained weights
 
 Download all pretrained weights for the deblurring networks from the following link:
