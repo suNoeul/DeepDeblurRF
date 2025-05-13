@@ -117,9 +117,14 @@ for index in range(start_index, max_index + 1):
     run_colmap_with_retries(imgs2poses_py, rf_folder, expected_images)
 
     images = sorted(os.listdir(image_dir))
-    image_ids = [int(os.path.splitext(f)[0]) for f in images]
-    train_ids = [i for i in image_ids if i % hold_val != 0]
-    test_ids = [i for i in image_ids if i % hold_val == 0]
+    image_ids = sorted(set(
+        int(os.path.splitext(f)[0])
+        for f in os.listdir(image_dir)
+        if os.path.splitext(f)[0].isdigit()
+    ))
+
+    train_ids = [image_ids[i] for i in range(len(image_ids)) if i % hold_val != 0]
+    test_ids = [image_ids[i] for i in range(len(image_ids)) if i % hold_val == 0]
 
     expname = f'{scene_name}_{index}'
     command = [
@@ -153,8 +158,16 @@ for index in range(start_index, max_index + 1):
 
     for (src_dir, dst_dir, id_list) in [(train_render, trviews_path, train_ids), (test_render, tsviews_path, test_ids)]:
         if os.path.isdir(src_dir):
-            for idx, f in enumerate(sorted(os.listdir(src_dir))):
-                shutil.copy(os.path.join(src_dir, f), os.path.join(dst_dir, f"{id_list[idx]:03d}.png"))
+            render_files = sorted(os.listdir(src_dir))
+            assert len(render_files) == len(id_list), (
+                f"[ERROR] Rendered image count ({len(render_files)}) does not match ID count ({len(id_list)}) "
+                f"in {src_dir}"
+            )
+            for f_rendered, true_id in zip(render_files, id_list):
+                shutil.copy(
+                    os.path.join(src_dir, f_rendered),
+                    os.path.join(dst_dir, f"{true_id:03d}.png")
+                )
 
     if index == max_index:
         final_results_dir = os.path.join(scene_root, f'Final_results')
