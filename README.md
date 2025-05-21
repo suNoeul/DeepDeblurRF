@@ -48,11 +48,13 @@ Build external components:
 # NAFNet
 cd NAFNet/
 python setup.py develop --no_cuda_ext
+cd ..
 
 # Gaussian Splatting submodules
 cd gaussian-splatting
 pip install ./submodules/diff-gaussian-rasterization
 pip install ./submodules/simple-knn
+cd ..
 
 # LLFF
 git submodule update --init --recursive
@@ -69,6 +71,11 @@ Download all pretrained weights for the deblurring networks from the following l
 Place them in:
 ```
 DeepDeblurRF/NAFNet/weights/
+  └── DDRF_G
+      ├── defocus
+      ├── defocus_dbnerf_real
+      ├── motion
+      └── motion_dbnerf_real
 ```
 
 ### 2. Prepare your test data
@@ -76,17 +83,17 @@ DeepDeblurRF/NAFNet/weights/
 Place your scene folder inside `data/`, e.g.:
 
 ```
-data/cozyroom/
+data/blurball/
 ├── blur/                  # blurry input images
 ├── nv/                    # sharp images (for NVS testing)
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
-For example, if you have 34 images (`000.png` to `033.png`) and `hold=8`,  
+For example, if you have 27 images (`000.png` to `026.png`) and `hold=7`,  
 then the held-out indices for NVS testing will be:
 
 ```
-nv/ = [000.png, 008.png, 016.png, 024.png, 032.png]
+nv/ = [000.png, 007.png, 014.png, 021.png]
 blur/ = all other images
 ```
 
@@ -101,7 +108,7 @@ Open and run `preprocessing.ipynb`. It performs:
 Expected result structure:
 
 ```
-data/cozyroom/
+data/blurball/
 ├── blur/
 ├── nv/
 ├── hold=<k>
@@ -131,7 +138,7 @@ configs/
 
 Example:
 ```bash
-python DeepDeblurRF.py -c configs/blurrf_synth/motion/cozyroom.txt
+python ddrf.py -c configs/dbnerf_real/motion/blurball.txt
 ```
 
 This will run the full iterative training and deblurring pipeline.
