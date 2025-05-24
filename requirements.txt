@@ -21,3 +21,6 @@ addict
 future
 lmdb
 yapf
+
+# --- SfM Backend ---
+colmap
