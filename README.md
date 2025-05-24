@@ -100,13 +100,18 @@ blur/ = all other images
 
 ### 3. Run preprocessing
 
-Open and run `preprocessing.ipynb`. It performs:
+Run the preprocessing script using:
+```
+python preprocessing.py
+```
+This replaces the previous Jupyter notebook (`preprocessing.ipynb`) and is more suitable for command-line or cluster environments.
 
-- Initial deblurring with NAFNet_SD → `deblur/deblur_0/`
-- Radiance field setup → `rf/rf_0/images/`
+It performs:
+
+- Initial deblurring with NAFNet_SD → deblur/deblur_0/
+- Radiance field setup → rf/rf_0/images/
 
 Expected result structure:
-
 ```
 data/blurball/
 ├── blur/
