@@ -6,10 +6,7 @@ __pycache__/
 # Root
 /output
 /data
-!/data/blurball
-!/data/blurball/blur
-!/data/blurball/nv
-!/data/blurball/hold=7
+slurm_scripts/
 
 gaussian-splatting/SIBR_viewers
 gaussian-splatting/.vscode
