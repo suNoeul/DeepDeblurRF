@@ -21,13 +21,23 @@ setup(
         CUDAExtension(
             name="diff_gaussian_rasterization._C",
             sources=[
-            "cuda_rasterizer/rasterizer_impl.cu",
-            "cuda_rasterizer/forward.cu",
-            "cuda_rasterizer/backward.cu",
-            "rasterize_points.cu",
-            "ext.cpp"],
-            extra_compile_args={"nvcc": ["-I" + os.path.join(os.path.dirname(os.path.abspath(__file__)), "third_party/glm/")]})
-        ],
+                "cuda_rasterizer/rasterizer_impl.cu",
+                "cuda_rasterizer/forward.cu",
+                "cuda_rasterizer/backward.cu",
+                "rasterize_points.cu",
+                "ext.cpp"
+            ],
+            extra_compile_args = {
+                "nvcc": [
+                    "-I" + os.path.join(os.path.dirname(os.path.abspath(__file__)), "third_party/glm/"),
+                    "-gencode=arch=compute_61,code=sm_61", # Titan Xp (Pascal Architecture, Compute Capability 6.1)
+                    "-gencode=arch=compute_70,code=sm_70", # Volta series  (e.g. V100)
+                    "-gencode=arch=compute_75,code=sm_75", # Turing series (e.g. RTX 2080)
+                    "-gencode=arch=compute_86,code=sm_86", # Ampere series (e.g. RTX 30xx)
+                ]
+            }
+        )
+    ],
     cmdclass={
         'build_ext': BuildExtension
     }
