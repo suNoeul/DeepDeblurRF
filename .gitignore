@@ -1,8 +1,15 @@
+# Python
 __pycache__/
 *.pyc
 *.egg-info/
-/README.md
+
+# Root
 /output
+/data
+!/data/blurball
+!/data/blurball/blur
+!/data/blurball/nv
+!/data/blurball/hold=7
 
 gaussian-splatting/SIBR_viewers
 gaussian-splatting/.vscode
@@ -22,3 +29,4 @@ NAFNet/*.sh
 NAFNet/datasets
 NAFNet/weights/*README.md
 NAFNet/.eggs
+NAFNet/basicsr*
