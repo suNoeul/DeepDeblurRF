@@ -4,9 +4,10 @@ __pycache__/
 *.egg-info/
 
 # Root
-/output
+/logs
 /data
-slurm_scripts/
+/output
+/slurm_scripts
 
 gaussian-splatting/SIBR_viewers
 gaussian-splatting/.vscode
