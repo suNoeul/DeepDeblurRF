@@ -1,6 +1,7 @@
 from collections import namedtuple
 import torch
 from torchvision import models as tv
+from torchvision.models import AlexNet_Weights
 
 
 class squeezenet(torch.nn.Module):
@@ -57,13 +58,20 @@ class squeezenet(torch.nn.Module):
 class alexnet(torch.nn.Module):
     def __init__(self, requires_grad=False, pretrained=True):
         super(alexnet, self).__init__()
-        alexnet_pretrained_features = tv.alexnet(pretrained=pretrained).features
+
+        if pretrained:
+            weights = AlexNet_Weights.IMAGENET1K_V1  
+        else:
+            weights = None
+
+        alexnet_pretrained_features = tv.alexnet(weights=weights).features
         self.slice1 = torch.nn.Sequential()
         self.slice2 = torch.nn.Sequential()
         self.slice3 = torch.nn.Sequential()
         self.slice4 = torch.nn.Sequential()
         self.slice5 = torch.nn.Sequential()
         self.N_slices = 5
+
         for x in range(2):
             self.slice1.add_module(str(x), alexnet_pretrained_features[x])
         for x in range(2, 5):
@@ -74,6 +82,7 @@ class alexnet(torch.nn.Module):
             self.slice4.add_module(str(x), alexnet_pretrained_features[x])
         for x in range(10, 12):
             self.slice5.add_module(str(x), alexnet_pretrained_features[x])
+        
         if not requires_grad:
             for param in self.parameters():
                 param.requires_grad = False

@@ -152,7 +152,8 @@ for index in range(start_index, max_index + 1):
                     '--test_iterations', str(iterations), '--save_iterations', str(iterations)])
     
     # === Step 5: Evaluate trained model and log quality metrics ===
-    psnr, ssim, lpips = extract_metrics(os.path.join(scene_root, 'metrics_log.txt'))
+    metrics_path = os.path.join("output", expname, "metrics_log.txt")
+    psnr, ssim, lpips = extract_metrics(metrics_path)
     if psnr and ssim and lpips:
         with open(metrics_file, 'a') as f:
             f.write(f"[Iteration {index}] PSNR: {psnr:.2f} SSIM: {ssim:.4f} LPIPS: {lpips:.4f}\n")

@@ -265,7 +265,13 @@ def training_report(tb_writer, iteration, Ll1, loss, l1_loss, elapsed, testing_i
                 # with open(f"{savedir}/psnr.txt", "a") as f:
                 #     f.write("[ITER {}] Evaluating {}: L1 {} PSNR {}\n".format(iteration, config['name'], l1_test, psnr_test))
                 #     f.write("[ITER {}] Evaluating {}: SSIM {:.4f} LPIPS {:.4f}\n".format(iteration, config['name'], ssim_test, lpips_test))
-                    
+                
+                # === Save PSNR, SSIM, LPIPS to metrics log ===
+                if config['name'] == 'test':
+                    metrics_log_path = os.path.join(scene.model_path, 'metrics_log.txt')
+                    with open(metrics_log_path, 'a') as f:
+                        f.write(f"[ITER {iteration}] Evaluating test: PSNR {psnr_test:.2f} SSIM {ssim_test:.4f} LPIPS {lpips_test:.4f}\n")
+
                 if tb_writer:
                     tb_writer.add_scalar(config['name'] + '/loss_viewpoint - l1_loss', l1_test, iteration)
                     tb_writer.add_scalar(config['name'] + '/loss_viewpoint - psnr', psnr_test, iteration)
