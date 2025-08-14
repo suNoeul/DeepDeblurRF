@@ -15,9 +15,7 @@ def run_colmap(basedir, match_type):
         '--image_path', os.path.join(basedir, 'images'),
         '--ImageReader.camera_model', 'SIMPLE_PINHOLE',
         '--ImageReader.single_camera', '1',
-        # The following two lines were removed because COLMAP does not support them
-        # '--ImageReader.estimate_affine_shape', '1',
-        # '--ImageReader.domain_size_pooling', '1',
+        '--SiftExtraction.use_gpu', '0',        # Disable GPU for SIFT extraction
     ]
 
     feat_output = subprocess.check_output(feature_extractor_args, universal_newlines=True)
@@ -28,6 +26,7 @@ def run_colmap(basedir, match_type):
     exhaustive_matcher_args = ['xvfb-run', '-a',
         'colmap', match_type,
         '--database_path', os.path.join(basedir, 'database.db'),
+        '--SiftMatching.use_gpu', '0',
         '--SiftMatching.guided_matching', '1',
     ]
     match_output = subprocess.check_output(exhaustive_matcher_args, universal_newlines=True)
@@ -40,7 +39,7 @@ def run_colmap(basedir, match_type):
         os.makedirs(sparse_path)
 
     # --- Mapping with COLAMP-specific settings ---
-    mapper_args = [
+    mapper_args = ['xvfb-run', '-a',
         'colmap', 'mapper',
         '--database_path', os.path.join(basedir, 'database.db'),
         '--image_path', os.path.join(basedir, 'images'),
