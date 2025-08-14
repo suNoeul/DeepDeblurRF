@@ -30,7 +30,10 @@ KT, POSTECH
 Clone the repository and set up the environment:
 
 ```bash
-git clone https://github.com/haeyun-choi/DeepDeblurRF.git
+salloc -N 1 -n 1 --gres=gpu:1 --nodelist=n1
+srun --pty bash  
+
+git clone https://github.com/suNoeul/DeepDeblurRF.git
 cd DeepDeblurRF
 
 conda create -n ddrf python=3.8
@@ -49,11 +52,13 @@ Build external components:
 # NAFNet
 cd NAFNet/
 python setup.py develop --no_cuda_ext
+cd ..
 
 # Gaussian Splatting submodules
 cd gaussian-splatting
 pip install ./submodules/diff-gaussian-rasterization
 pip install ./submodules/simple-knn
+cd ..
 
 # LLFF
 git submodule update --init --recursive
@@ -70,6 +75,11 @@ Download all pretrained weights for the deblurring networks from the following l
 Place them in:
 ```
 DeepDeblurRF/NAFNet/weights/
+  └── DDRF_G
+      ├── defocus
+      ├── defocus_dbnerf_real
+      ├── motion
+      └── motion_dbnerf_real
 ```
 
 ### 2. Prepare your test data
@@ -77,35 +87,77 @@ DeepDeblurRF/NAFNet/weights/
 Place your scene folder inside `data/`, e.g.:
 
 ```
-data/cozyroom/
+data/blurball/
 ├── blur/                  # blurry input images
 ├── nv/                    # sharp images (for NVS testing)
 ├── hold=<k>               # NVS split (e.g., 1 every k frames)
 ```
 
-For example, if you have 34 images (`000.png` to `033.png`) and `hold=8`,  
+For example, if you have 27 images (`000.png` to `026.png`) and `hold=7`,  
 then the held-out indices for NVS testing will be:
 
 ```
-nv/ = [000.png, 008.png, 016.png, 024.png, 032.png]
+nv/ = [000.png, 007.png, 014.png, 021.png]
 blur/ = all other images
 ```
 
 
 ### 3. Run preprocessing
 
-Open and run `preprocessing.ipynb`. It performs:
+The preprocessing step creates the **initial deblurred dataset** (`D₀`) and prepares the Radiance Field (RF) input directory.
+
+**Mode requirement:**  
+This mode change is necessary because the NAFNet codebase has **two different `basicsr` implementations**:
+  - **SD mode** (`basicsr` + `basicsr_RF` exists) → Used for standalone deblurring (D₀).
+  - **RF mode** (`basicsr` + `basicsr_SD` exists) → Used for RF-guided deblurring during DDRF iterations.
+
+You can switch modes using:
+```bash
+python switch_basicsr.py --mode sd  # Activate SD mode for D₀ generation
+python switch_basicsr.py --mode rf  # Activate RF mode for DDRF pipeline
+```
+<summary><strong>Open and run <code>preprocessing.ipynb</code>.</strong></summary>
+
+It performs:
 
 - Initial deblurring with NAFNet_SD → `deblur/deblur_0/`
 - Radiance field setup → `rf/rf_0/images/`
 
+<br>
+
+<details> <summary><strong>Option: CLI alternative (<code>prepare_dataset.py</code>)</strong></summary>
+If you cannot use the Jupyter notebook, you can perform the same preprocessing from the command line.
+
+This script will:
+- Ensure SD mode is active (switch if necessary).
+- Generate deblur/deblur_0/ from blur/ (incremental by default).
+- Populate rf/rf_0/images/ with both deblur_0 and nv/.
+- Copy hold=<k> into rf/rf_0/.
+
+**Usage (incremental default):**
+```bash
+python switch_basicsr.py --mode sd
+python prepare_dataset.py \
+    --scene_name blurball \
+    --scene_type motion_dbnerf_real
+```
+
+After running preprocessing in SD mode, remember to switch to RF mode before executing:
+
+```bash
+python switch_basicsr.py --mode rf
+python ddrf.py -c configs/<data_type>/<blur_type>/<scene_name>.txt
+```
+</details> 
+
+<br>
 Expected result structure:
 
 ```
 data/cozyroom/
-├── blur/
-├── nv/
-├── hold=<k>
+├── blur/      # before preprocessing
+├── nv/        # before preprocessing
+├── hold=<k>   # before preprocessing
 ├── deblur/
 │   └── deblur_0/
 ├── rf/
@@ -113,7 +165,7 @@ data/cozyroom/
 │       └── images/
 │       └── hold=<k>
 ```
-
+</details>
 
 ### 4. Run the DeepDeblurRF pipeline
 
@@ -132,7 +184,7 @@ configs/
 
 Example:
 ```bash
-python DeepDeblurRF.py -c configs/blurrf_synth/motion/cozyroom.txt
+python ddrf.py -c configs/dbnerf_real/motion/blurball.txt
 ```
 
 This will run the full iterative training and deblurring pipeline.
