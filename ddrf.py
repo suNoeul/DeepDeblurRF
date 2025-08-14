@@ -5,204 +5,188 @@ import numpy as np
 import shutil
 import subprocess
 import argparse
-from PIL import Image
 import torch
-from imageio import imread
+
 from basicsr.models import create_model
 from basicsr.utils.options import parse
 from basicsr.utils import img2tensor as _img2tensor, tensor2img, imwrite
 
-def imread(img_path):
-    img = cv2.imread(img_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    return img
+# -----------------------------
+# Utility Functions
+# -----------------------------
+def read_image(path):
+    """Read image (RGB)."""
+    img = cv2.imread(path)
+    return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 def img2tensor(img, bgr2rgb=False, float32=True):
+    """Convert numpy image to tensor (0~1)."""
     img = img.astype(np.float32) / 255.
     return _img2tensor(img, bgr2rgb=bgr2rgb, float32=float32)
 
-def single_image_inference(model, img, save_path):
-    model.feed_data(data={'lq': img.unsqueeze(dim=0)})
+def run_inference(model, img, save_path):
+    """Run single-image inference and save result."""
+    model.feed_data({'lq': img.unsqueeze(0)})
     model.test()
-    visuals = model.get_current_visuals()
-    sr_img = tensor2img([visuals['result']])
-    imwrite(sr_img, save_path)
+    result = tensor2img([model.get_current_visuals()['result']])
+    imwrite(result, save_path)
 
-def run_colmap_with_retries(imgs2poses_py, rf_folder, expected_images, retries=100):
+def run_colmap(imgs2poses_py, rf_folder, expected_images, retries=100):
+    """Run COLMAP with retries until poses are generated."""
     for attempt in range(retries):
         subprocess.run(['python', imgs2poses_py, rf_folder])
         if os.path.exists(os.path.join(rf_folder, 'poses_bounds.npy')):
-            print(f"[COLMAP] Success on attempt {attempt+1} (poses_bounds.npy found).")
+            print(f"[COLMAP] Success on attempt {attempt+1}.")
             return
         print(f"[COLMAP] Failed attempt {attempt+1}, retrying...")
         for item in ['sparse', 'colmap_output.txt', 'database.db']:
-            path = os.path.join(rf_folder, item)
-            if os.path.isdir(path):
-                shutil.rmtree(path)
-            elif os.path.isfile(path):
-                os.remove(path)
-    raise RuntimeError(f"[COLMAP] Failed after {retries} attempts for {rf_folder}")
+            p = os.path.join(rf_folder, item)
+            if os.path.isdir(p):
+                shutil.rmtree(p)
+            elif os.path.isfile(p):
+                os.remove(p)
+    raise RuntimeError(f"[COLMAP] Failed after {retries} attempts.")
 
-def extract_metrics(log_path):
-    psnr, ssim, lpips = None, None, None
+def parse_metrics(log_path):
+    """Extract PSNR/SSIM/LPIPS from log file."""
+    psnr = ssim = lpips = None
     if os.path.exists(log_path):
         with open(log_path) as f:
-            lines = f.readlines()
-        for line in lines:
-            if "Evaluating test:" in line and "PSNR" in line:
-                parts = line.split()
-                if "PSNR" in parts:
-                    psnr = float(parts[parts.index("PSNR") + 1])
-            if "Evaluating test:" in line and "SSIM" in line:
-                parts = line.split()
-                if "SSIM" in parts:
-                    ssim = float(parts[parts.index("SSIM") + 1])
-                if "LPIPS" in parts:
-                    lpips = float(parts[parts.index("LPIPS") + 1])
-            if psnr and ssim and lpips:
-                break
+            for line in f:
+                if "Evaluating test:" in line:
+                    parts = line.split()
+                    if "PSNR" in parts: psnr = float(parts[parts.index("PSNR") + 1])
+                    if "SSIM" in parts: ssim = float(parts[parts.index("SSIM") + 1])
+                    if "LPIPS" in parts: lpips = float(parts[parts.index("LPIPS") + 1])
+                if psnr and ssim and lpips:
+                    break
     return psnr, ssim, lpips
 
-# Load config
-parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", type=str, required=True)
-args = parser.parse_args()
+# -----------------------------
+# Main Pipeline
+# -----------------------------
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--config", type=str, required=True)
+    args = parser.parse_args()
 
-config = {}
-with open(args.config) as f:
-    exec(f.read(), config)
+    # Load config (simple exec-based load)
+    cfg = {}
+    with open(args.config) as f:
+        exec(f.read(), cfg)
 
-start_index = config.get('start_index', 1)  # Default 1
-max_index = config['max_index']
-iteration_list = config['iteration_list']
-scene_name = config['scene_name']
-gpu_id = config.get('gpu', '0')
-scene_type = config['scene_type']
-os.environ['CUDA_VISIBLE_DEVICES'] = gpu_id
+    start_idx = cfg.get('start_index', 1)
+    max_idx = cfg['max_index']
+    iteration_list = cfg['iteration_list']
+    scene_name = cfg['scene_name']
+    gpu_id = cfg.get('gpu', '0')
+    scene_type = cfg['scene_type']
 
-ddrf_root = './'
-scene_root = os.path.join(ddrf_root, 'data', scene_name)
-rendered_root = os.path.join(scene_root, 'rendered')
-metrics_file = os.path.join(scene_root, 'metrics.txt')
-os.makedirs(rendered_root, exist_ok=True)
+    os.environ['CUDA_VISIBLE_DEVICES'] = gpu_id
 
-imgs2poses_py = os.path.join(ddrf_root, 'LLFF', 'imgs2poses.py')
-train_py = os.path.join(ddrf_root, 'gaussian-splatting', 'train.py')
-render_py = os.path.join(ddrf_root, 'gaussian-splatting', 'render.py')
+    ddrf_root = './'
+    scene_root = os.path.join(ddrf_root, 'data', scene_name)
+    rendered_root = os.path.join(scene_root, 'rendered')
+    metrics_file = os.path.join(scene_root, 'metrics.txt')
+    os.makedirs(rendered_root, exist_ok=True)
 
-hold_txt = [f for f in os.listdir(scene_root) if f.startswith('hold=')][0]
-hold_val = int(hold_txt.split('=')[-1])
+    imgs2poses_py = os.path.join(ddrf_root, 'LLFF', 'imgs2poses.py')
+    train_py = os.path.join(ddrf_root, 'gaussian-splatting', 'train.py')
+    render_py = os.path.join(ddrf_root, 'gaussian-splatting', 'render.py')
 
-total_start_time = time.time()
+    hold_val = int([f for f in os.listdir(scene_root) if f.startswith('hold=')][0].split('=')[-1])
+    total_start = time.time()
 
-for index in range(start_index, max_index + 1):
-    start_time = time.time()
-    iterations = iteration_list[index - 1]
-    rf_input_index = index - 1
-    rf_folder = os.path.join(scene_root, 'rf', f'rf_{rf_input_index}')
-    deblur_input = os.path.join(scene_root, 'deblur', f'deblur_{rf_input_index}')
+    for idx in range(start_idx, max_idx + 1):
+        print(f"\n[Iteration {idx}] Starting pipeline...")
+        iter_start = time.time()
 
-    print(f"[Iteration {index}] Starting pipeline...")
+        rf_input_idx = idx - 1
+        rf_folder = os.path.join(scene_root, 'rf', f'rf_{rf_input_idx}')
+        deblur_input = os.path.join(scene_root, 'deblur', f'deblur_{rf_input_idx}')
 
-    os.makedirs(os.path.join(rf_folder, 'images'), exist_ok=True)
-    for f in sorted(os.listdir(deblur_input)):
-        shutil.copy(os.path.join(deblur_input, f), os.path.join(rf_folder, 'images', f))
-    for f in sorted(os.listdir(os.path.join(scene_root, 'nv'))):
-        shutil.copy(os.path.join(scene_root, 'nv', f), os.path.join(rf_folder, 'images', f))
-    hold_file = [f for f in os.listdir(scene_root) if f.startswith('hold=')][0]
-    shutil.copy(os.path.join(scene_root, hold_file), rf_folder)
+        # Prepare COLMAP input images
+        os.makedirs(os.path.join(rf_folder, 'images'), exist_ok=True)
+        for folder in [deblur_input, os.path.join(scene_root, 'nv')]:
+            for f in sorted(os.listdir(folder)):
+                shutil.copy(os.path.join(folder, f), os.path.join(rf_folder, 'images', f))
+        shutil.copy([os.path.join(scene_root, f) for f in os.listdir(scene_root) if f.startswith('hold=')][0], rf_folder)
 
-    image_dir = os.path.join(rf_folder, 'images')
-    expected_images = len([f for f in os.listdir(image_dir) if f.endswith('.png')])
-    run_colmap_with_retries(imgs2poses_py, rf_folder, expected_images)
+        # Run COLMAP
+        expected_imgs = len([f for f in os.listdir(os.path.join(rf_folder, 'images')) if f.endswith('.png')])
+        run_colmap(imgs2poses_py, rf_folder, expected_imgs)
 
-    images = sorted(os.listdir(image_dir))
-    image_ids = sorted(set(
-        int(os.path.splitext(f)[0])
-        for f in os.listdir(image_dir)
-        if os.path.splitext(f)[0].isdigit()
-    ))
+        # Train RF model
+        expname = f'{scene_name}_{idx}'
+        iterations = iteration_list[idx - 1]
+        subprocess.run([
+            'python', train_py,
+            '--expname', expname, '-s', rf_folder,
+            '--port', '8888', '--eval',
+            '--iterations', str(iterations),
+            '--test_iterations', str(iterations),
+            '--save_iterations', str(iterations)
+        ])
 
-    train_ids = [image_ids[i] for i in range(len(image_ids)) if i % hold_val != 0]
-    test_ids = [image_ids[i] for i in range(len(image_ids)) if i % hold_val == 0]
+        # Log metrics
+        psnr, ssim, lpips = parse_metrics(os.path.join(scene_root, 'metrics_log.txt'))
+        if psnr and ssim and lpips:
+            with open(metrics_file, 'a') as f:
+                f.write(f"[Iteration {idx}] PSNR: {psnr:.2f}  SSIM: {ssim:.4f}  LPIPS: {lpips:.4f}\n")
 
-    expname = f'{scene_name}_{index}'
-    command = [
-        'python', train_py,
-        '--expname', expname,
-        '-s', rf_folder,
-        '--port', '8888',
-        '--eval', '--iterations', str(iterations),
-        '--test_iterations', str(iterations),
-        '--save_iterations', str(iterations)
-    ]
-    subprocess.run(command)
+        # Render RF outputs
+        model_dir = os.path.join(ddrf_root, 'output', expname)
+        subprocess.run(['python', render_py, '-m', model_dir, '--iteration', str(iterations), '--quiet'])
 
-    log_path = os.path.join(scene_root, 'metrics_log.txt')
-    psnr, ssim, lpips = extract_metrics(log_path)
-    if psnr and ssim and lpips:
-        with open(metrics_file, 'a') as f:
-            f.write(f"[Iteration {index}] PSNR: {psnr:.2f}  SSIM: {ssim:.4f}  LPIPS: {lpips:.4f}\n")
+        # Organize rendered images
+        trviews_path = os.path.join(rendered_root, f'trviews_{idx}')
+        tsviews_path = os.path.join(rendered_root, f'tsviews_{idx}')
+        os.makedirs(trviews_path, exist_ok=True)
+        os.makedirs(tsviews_path, exist_ok=True)
 
-    model_dir = os.path.join(ddrf_root, 'output', expname)
-    render_iter = iterations
-    render_cmd = ['python', render_py, '-m', model_dir, '--iteration', str(render_iter), '--quiet']
-    subprocess.run(render_cmd)
+        train_render = os.path.join(model_dir, 'train', f'ours_{iterations}', 'renders')
+        test_render = os.path.join(model_dir, 'test', f'ours_{iterations}', 'renders')
 
-    trviews_path = os.path.join(rendered_root, f'trviews_{index}')
-    tsviews_path = os.path.join(rendered_root, f'tsviews_{index}')
-    os.makedirs(trviews_path, exist_ok=True)
-    os.makedirs(tsviews_path, exist_ok=True)
-    train_render = os.path.join(model_dir, 'train', f'ours_{render_iter}', 'renders')
-    test_render = os.path.join(model_dir, 'test', f'ours_{render_iter}', 'renders')
+        image_ids = sorted(int(os.path.splitext(f)[0]) for f in os.listdir(os.path.join(rf_folder, 'images')) if f.split('.')[0].isdigit())
+        train_ids = [i for i in image_ids if i % hold_val != 0]
+        test_ids = [i for i in image_ids if i % hold_val == 0]
 
-    for (src_dir, dst_dir, id_list) in [(train_render, trviews_path, train_ids), (test_render, tsviews_path, test_ids)]:
-        if os.path.isdir(src_dir):
-            render_files = sorted(os.listdir(src_dir))
-            assert len(render_files) == len(id_list), (
-                f"[ERROR] Rendered image count ({len(render_files)}) does not match ID count ({len(id_list)}) "
-                f"in {src_dir}"
-            )
-            for f_rendered, true_id in zip(render_files, id_list):
-                shutil.copy(
-                    os.path.join(src_dir, f_rendered),
-                    os.path.join(dst_dir, f"{true_id:03d}.png")
-                )
+        for (src, dst, ids) in [(train_render, trviews_path, train_ids), (test_render, tsviews_path, test_ids)]:
+            if os.path.isdir(src):
+                files = sorted(os.listdir(src))
+                assert len(files) == len(ids), f"[ERROR] Mismatch: {len(files)} files vs {len(ids)} IDs"
+                for f_render, true_id in zip(files, ids):
+                    shutil.copy(os.path.join(src, f_render), os.path.join(dst, f"{true_id:03d}.png"))
 
-    if index == max_index:
-        final_results_dir = os.path.join(scene_root, f'Final_results')
-        os.makedirs(final_results_dir, exist_ok=True)
-        for f in sorted(os.listdir(tsviews_path)):
-            shutil.copy(os.path.join(tsviews_path, f), os.path.join(final_results_dir, f))
+        # Save final results
+        if idx == max_idx:
+            final_dir = os.path.join(scene_root, 'Final_results')
+            os.makedirs(final_dir, exist_ok=True)
+            for f in sorted(os.listdir(tsviews_path)):
+                shutil.copy(os.path.join(tsviews_path, f), os.path.join(final_dir, f))
 
-    if index < max_index:
-        opt_path = os.path.join(ddrf_root, 'NAFNet', 'options', 'test', 'DDRF_G', scene_type, f'NAFNet-width64_{min(index, 4)}.yml')
-        opt = parse(opt_path, is_train=False)
-        opt['dist'] = False
-        NAFNet = create_model(opt)
+        # RF-guided deblurring for next iteration
+        if idx < max_idx:
+            opt_path = os.path.join(ddrf_root, 'NAFNet', 'options', 'test', 'DDRF_G', scene_type, f'NAFNet-width64_{min(idx, 4)}.yml')
+            opt = parse(opt_path, is_train=False)
+            opt['dist'] = False
+            NAFNet = create_model(opt)
 
-        input_path = os.path.join(scene_root, 'blur')
-        rendered_path = trviews_path
-        output_path = os.path.join(scene_root, 'deblur', f'deblur_{index}')
-        os.makedirs(output_path, exist_ok=True)
+            input_path = os.path.join(scene_root, 'blur')
+            rendered_path = trviews_path
+            output_path = os.path.join(scene_root, 'deblur', f'deblur_{idx}')
+            os.makedirs(output_path, exist_ok=True)
 
-        input_images = sorted(os.listdir(input_path))
-        rendered_images = sorted(os.listdir(rendered_path))
+            for in_img, rend_img in zip(sorted(os.listdir(input_path)), sorted(os.listdir(rendered_path))):
+                core = in_img[:-4]
+                inp_input = img2tensor(read_image(os.path.join(input_path, in_img)))
+                inp_render = img2tensor(read_image(os.path.join(rendered_path, rend_img)))
+                combined = torch.cat((inp_input, inp_render), dim=0)
+                run_inference(NAFNet, combined, os.path.join(output_path, core + '.png'))
 
-        for input_img, rendered_img in zip(input_images, rendered_images):
-            core_name = input_img[:-4]
-            input_image = os.path.join(input_path, input_img)
-            rendered_image = os.path.join(rendered_path, rendered_img)
-            img_input = imread(input_image)
-            img_rendered = imread(rendered_image)
-            inp_input = img2tensor(img_input)
-            inp_rendered = img2tensor(img_rendered)
-            inp = torch.cat((inp_input, inp_rendered), dim=0)
-            img_output_path = os.path.join(output_path, core_name + '.png')
-            single_image_inference(NAFNet, inp, img_output_path)
+        print(f"[Iteration {idx}] Done in {time.time() - iter_start:.2f}s")
 
-    elapsed = time.time() - start_time
-    print(f"[Iteration {index}] Finished in {elapsed:.2f} seconds.")
+    print(f"\n[Total] Finished in {(time.time() - total_start)/60:.2f} min.")
 
-total_elapsed = time.time() - total_start_time
-print(f"[Total] Training finished in {total_elapsed / 60:.2f} minutes.")
+if __name__ == "__main__":
+    main()
